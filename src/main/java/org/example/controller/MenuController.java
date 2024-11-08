@@ -24,6 +24,9 @@ public class MenuController {
         JMenu shapeMenu = createShapeMenu();
         menuBar.add(shapeMenu);
 
+        //JMenu colorMenu = new JMenu();
+
+
         return menuBar;
     }
 
@@ -36,8 +39,8 @@ public class MenuController {
 
         JMenu shapeMenu = new JMenu("Фигура");
         ButtonGroup group = new ButtonGroup();
-        //поменять на фабрику
         JRadioButtonMenuItem square = new JRadioButtonMenuItem("Прямоугольник");
+        //поменять на фабрику
         square.addActionListener(e -> {
             MyShape sampleShape = actionDraw.getShape();
             sampleShape.setShape(new Rectangle2D.Double());
@@ -52,6 +55,11 @@ public class MenuController {
         shapeMenu.add(ellipse);
         group.add(ellipse);
         return shapeMenu;
+
+
+       // JMenu colorMenu = new JMenuBar("Цвета");
+
+
     }
 
     public void setActionDraw(ActionDraw actionDraw) {

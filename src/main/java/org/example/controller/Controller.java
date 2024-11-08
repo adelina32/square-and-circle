@@ -27,6 +27,7 @@ public class Controller {
         return instance;
     }
 
+
     private Controller() {
         model = new Model();
         MyShape sampleShape = new MyShape(new Rectangle2D.Double());
@@ -45,6 +46,7 @@ public class Controller {
         frame.setJMenuBar(menuController.createMenuBar());
 
     }
+
 
     public void getPointOne(Point2D p) {
         actionDraw.createShape((Point) p);
