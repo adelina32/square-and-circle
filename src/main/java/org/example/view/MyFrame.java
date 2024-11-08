@@ -22,5 +22,4 @@ public class MyFrame extends JFrame {
         add(panel);
     }
 
-
-} 
+}

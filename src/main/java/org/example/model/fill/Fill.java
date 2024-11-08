@@ -27,4 +27,12 @@ public class Fill implements FillBehavior {
         shape = s;
     }
 
+    @Override
+    public  FillBehavior clone(){
+        Fill fill = new Fill();
+        fill.setColor(color);
+        fill.shape =(RectangularShape) shape.clone();
+        return  fill;
+    }
+
 }
