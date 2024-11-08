@@ -39,6 +39,11 @@ public class Controller {
 
         frame = new MyFrame();
         frame.setPanel(panel);
+
+        MenuController menuController = MenuController.getInstance();
+        menuController.setActionDraw(actionDraw);
+        frame.setJMenuBar(menuController.createMenuBar());
+
     }
 
     public void getPointOne(Point2D p) {
@@ -52,4 +57,5 @@ public class Controller {
     public void draw(Graphics2D g2) {
         model.draw(g2);
     }
+
 }

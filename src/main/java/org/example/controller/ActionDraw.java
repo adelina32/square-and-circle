@@ -12,6 +12,10 @@ public class ActionDraw {
     private Point2D firstPoint;
     private Point2D secondPoint;
 
+    public MyShape getShape() {
+        return shape;
+    }
+
     public ActionDraw(Model model, MyShape shape) {
         this.model = model;
         this.shape = shape;

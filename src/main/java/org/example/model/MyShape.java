@@ -2,6 +2,7 @@ package org.example.model;
 
 import org.example.model.fill.Fill;
 import org.example.model.fill.FillBehavior;
+import org.example.model.fill.NoFill;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -24,7 +25,7 @@ public class MyShape implements  Cloneable{
 
     // TODO: 25.10.2024  Попробовать вызовы через разные конструкторы, затем переделать создание через фабрику
     public MyShape() {
-        color = Color.BLUE;
+        color = Color.PINK;
         shape = new Rectangle2D.Double();
         fb = new Fill();
         fb.setColor(color);
