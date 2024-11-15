@@ -1,0 +1,498 @@
+Index: src/main/java/org/example/controller/factory/ShapeType.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/example/controller/factory/ShapeType.java b/src/main/java/org/example/controller/factory/ShapeType.java
+new file mode 100644
+--- /dev/null	(date 1731656978615)
++++ b/src/main/java/org/example/controller/factory/ShapeType.java	(date 1731656978615)
+@@ -0,0 +1,23 @@
++package org.example.controller.factory;
++
++import java.awt.geom.Rectangle2D;
++import java.awt.geom.RectangularShape;
++
++public enum ShapeType {
++    RECTANGULAR {
++        @Override
++        public RectangularShape createShape() {
++            return new Rectangle2D.Double();
++        }
++    },
++
++
++    ELLIPSE {
++        @Override
++        public RectangularShape createShape() {
++            return new Rectangle2D.Double();
++        }
++    };
++
++    public abstract RectangularShape createShape();
++}
+\ No newline at end of file
+Index: src/main/java/org/example/controller/MenuController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.example.controller;\r\n\r\nimport org.example.model.MyShape;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.geom.Ellipse2D;\r\nimport java.awt.geom.Rectangle2D;\r\n\r\npublic class MenuController {\r\n    private static MenuController instance;\r\n    private JMenuBar menuBar;\r\n    private ActionDraw actionDraw;\r\n    private MenuController(){\r\n        menuBar = createMenuBar();\r\n    }\r\n    public static MenuController getInstance(){\r\n        if (instance == null){\r\n            instance = new MenuController();\r\n        }\r\n        return instance;\r\n    }\r\n    public JMenuBar createMenuBar(){\r\n        JMenuBar menuBar = new JMenuBar();\r\n        JMenu shapeMenu = createShapeMenu();\r\n        menuBar.add(shapeMenu);\r\n\r\n        //JMenu colorMenu = new JMenu();\r\n\r\n\r\n        return menuBar;\r\n    }\r\n\r\n//    public enum ShapeType{\r\n//        RECTANGULAR, ELLIPSE\r\n//    }\r\n\r\n\r\n    private JMenu createShapeMenu() {\r\n\r\n        JMenu shapeMenu = new JMenu(\"Фигура\");\r\n        ButtonGroup group = new ButtonGroup();\r\n        JRadioButtonMenuItem square = new JRadioButtonMenuItem(\"Прямоугольник\");\r\n        //поменять на фабрику\r\n        square.addActionListener(e -> {\r\n            MyShape sampleShape = actionDraw.getShape();\r\n            sampleShape.setShape(new Rectangle2D.Double());\r\n        });\r\n        shapeMenu.add(square);\r\n        group.add(square);\r\n        JRadioButtonMenuItem ellipse = new JRadioButtonMenuItem(\"Эллипс\");\r\n        ellipse.addActionListener(e -> {\r\n            MyShape sampleShape = actionDraw.getShape();\r\n            sampleShape.setShape(new Ellipse2D.Double());\r\n        });\r\n        shapeMenu.add(ellipse);\r\n        group.add(ellipse);\r\n        return shapeMenu;\r\n\r\n\r\n       // JMenu colorMenu = new JMenuBar(\"Цвета\");\r\n\r\n\r\n    }\r\n\r\n    public void setActionDraw(ActionDraw actionDraw) {\r\n        this.actionDraw = actionDraw;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/example/controller/MenuController.java b/src/main/java/org/example/controller/MenuController.java
+--- a/src/main/java/org/example/controller/MenuController.java	(revision c40cd86ee12329c27f61270facc788795f5c57b5)
++++ b/src/main/java/org/example/controller/MenuController.java	(date 1731659925462)
+@@ -1,15 +1,20 @@
+ package org.example.controller;
+ 
+-import org.example.model.MyShape;
++import lombok.Getter;
++import lombok.Setter;
++import org.example.controller.action.AppAction;
++import org.example.controller.factory.MenuState;
++import org.example.controller.factory.ShapeType;
+ 
+ import javax.swing.*;
+-import java.awt.geom.Ellipse2D;
+-import java.awt.geom.Rectangle2D;
+ 
++@Getter
++@Setter
+ public class MenuController {
+     private static MenuController instance;
+     private JMenuBar menuBar;
+-    private ActionDraw actionDraw;
++    private AppAction actionDraw;
++    private MenuState state;
+     private MenuController(){
+         menuBar = createMenuBar();
+     }
+@@ -30,28 +35,20 @@
+         return menuBar;
+     }
+ 
+-//    public enum ShapeType{
+-//        RECTANGULAR, ELLIPSE
+-//    }
+-
+ 
+     private JMenu createShapeMenu() {
+ 
+         JMenu shapeMenu = new JMenu("Фигура");
+         ButtonGroup group = new ButtonGroup();
++
+         JRadioButtonMenuItem square = new JRadioButtonMenuItem("Прямоугольник");
+-        //поменять на фабрику
+-        square.addActionListener(e -> {
+-            MyShape sampleShape = actionDraw.getShape();
+-            sampleShape.setShape(new Rectangle2D.Double());
+-        });
++        square.addActionListener(e -> state.setShapeType(ShapeType.RECTANGULAR));
+         shapeMenu.add(square);
+         group.add(square);
++
+         JRadioButtonMenuItem ellipse = new JRadioButtonMenuItem("Эллипс");
+-        ellipse.addActionListener(e -> {
+-            MyShape sampleShape = actionDraw.getShape();
+-            sampleShape.setShape(new Ellipse2D.Double());
+-        });
++        ellipse.addActionListener(e -> state.setShapeType(ShapeType.ELLIPSE));
++
+         shapeMenu.add(ellipse);
+         group.add(ellipse);
+         return shapeMenu;
+@@ -60,9 +57,5 @@
+        // JMenu colorMenu = new JMenuBar("Цвета");
+ 
+ 
+-    }
+-
+-    public void setActionDraw(ActionDraw actionDraw) {
+-        this.actionDraw = actionDraw;
+     }
+ }
+Index: src/main/java/org/example/controller/action/AppAction.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/example/controller/action/AppAction.java b/src/main/java/org/example/controller/action/AppAction.java
+new file mode 100644
+--- /dev/null	(date 1731659420534)
++++ b/src/main/java/org/example/controller/action/AppAction.java	(date 1731659420534)
+@@ -0,0 +1,9 @@
++package org.example.controller.action;
++
++import java.awt.*;
++
++public interface AppAction {
++    void mousePressed(Point point);
++    void mouseDragged(Point point);
++
++}
+Index: src/main/java/org/example/controller/Controller.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.example.controller;\r\n\r\nimport org.example.model.Model;\r\nimport org.example.model.MyShape;\r\nimport org.example.model.fill.Fill;\r\nimport org.example.model.fill.NoFill;\r\nimport org.example.view.MyFrame;\r\nimport org.example.view.MyPanel;\r\n\r\nimport java.awt.*;\r\nimport java.awt.geom.Point2D;\r\nimport java.awt.geom.Rectangle2D;\r\n\r\npublic class Controller {\r\n    private Model model;\r\n    private MyFrame frame;\r\n    private MyPanel panel;\r\n    private Point2D firstPoint;\r\n    private Point2D secondPoint;\r\n    private static Controller instance;\r\n    private ActionDraw actionDraw;\r\n\r\n    public static synchronized Controller getInstance(){\r\n        if (instance == null){\r\n            instance = new Controller();\r\n        }\r\n        return instance;\r\n    }\r\n\r\n\r\n    private Controller() {\r\n        model = new Model();\r\n        MyShape sampleShape = new MyShape(new Rectangle2D.Double());\r\n        sampleShape.setFb(new NoFill());\r\n        actionDraw = new ActionDraw(model, sampleShape);\r\n        model.setMyShape(sampleShape);\r\n        panel = new MyPanel(this, actionDraw);\r\n\r\n        model.addObserver(panel);\r\n\r\n        frame = new MyFrame();\r\n        frame.setPanel(panel);\r\n\r\n        MenuController menuController = MenuController.getInstance();\r\n        menuController.setActionDraw(actionDraw);\r\n        frame.setJMenuBar(menuController.createMenuBar());\r\n\r\n    }\r\n\r\n\r\n    public void getPointOne(Point2D p) {\r\n        actionDraw.createShape((Point) p);\r\n    }\r\n\r\n    public void getPointTwo(Point2D p){\r\n        actionDraw.stretchShape((Point) p);\r\n    }\r\n\r\n    public void draw(Graphics2D g2) {\r\n        model.draw(g2);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/example/controller/Controller.java b/src/main/java/org/example/controller/Controller.java
+--- a/src/main/java/org/example/controller/Controller.java	(revision c40cd86ee12329c27f61270facc788795f5c57b5)
++++ b/src/main/java/org/example/controller/Controller.java	(date 1731660106933)
+@@ -1,8 +1,13 @@
+ package org.example.controller;
+ 
++import org.example.controller.action.ActionDraw;
++import org.example.controller.action.AppAction;
++import org.example.controller.factory.MenuState;
++import org.example.controller.factory.ShapeCreation;
+ import org.example.model.Model;
++
++
+ import org.example.model.MyShape;
+-import org.example.model.fill.Fill;
+ import org.example.model.fill.NoFill;
+ import org.example.view.MyFrame;
+ import org.example.view.MyPanel;
+@@ -18,7 +23,8 @@
+     private Point2D firstPoint;
+     private Point2D secondPoint;
+     private static Controller instance;
+-    private ActionDraw actionDraw;
++    private AppAction actionDraw;
++    private MenuState menuState;
+ 
+     public static synchronized Controller getInstance(){
+         if (instance == null){
+@@ -29,10 +35,25 @@
+ 
+ 
+     private Controller() {
++
++        menuState = new MenuState();
++        ShapeCreation shapeCreation = ShapeCreation.getInstance();
++        shapeCreation.config(menuState);
++
+         model = new Model();
+         MyShape sampleShape = new MyShape(new Rectangle2D.Double());
+         sampleShape.setFb(new NoFill());
+-        actionDraw = new ActionDraw(model, sampleShape);
++        actionDraw = new ActionDraw(model, sampleShape) {
++            @Override
++            public void mousePressed(Point point) {
++
++            }
++
++            @Override
++            public void mouseDragged(Point point) {
++
++            }
++        };
+         model.setMyShape(sampleShape);
+         panel = new MyPanel(this, actionDraw);
+ 
+@@ -43,17 +64,19 @@
+ 
+         MenuController menuController = MenuController.getInstance();
+         menuController.setActionDraw(actionDraw);
++        menuController.setState(menuState);
+         frame.setJMenuBar(menuController.createMenuBar());
++        frame.revalidate();
+ 
+     }
+ 
+ 
+     public void getPointOne(Point2D p) {
+-        actionDraw.createShape((Point) p);
++        actionDraw.mousePressed((Point) p);
+     }
+ 
+     public void getPointTwo(Point2D p){
+-        actionDraw.stretchShape((Point) p);
++        actionDraw.mouseDragged((Point) p);
+     }
+ 
+     public void draw(Graphics2D g2) {
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_17\" default=\"true\" project-jdk-name=\"17\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision c40cd86ee12329c27f61270facc788795f5c57b5)
++++ b/.idea/misc.xml	(date 1731655089109)
+@@ -1,4 +1,3 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ExternalStorageConfigurationManager" enabled="true" />
+   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK">
+Index: src/main/java/org/example/view/MyPanel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.example.view;\r\n\r\nimport org.example.controller.ActionDraw;\r\nimport org.example.controller.Controller;\r\n\r\nimport java.awt.Graphics;\r\nimport java.awt.Graphics2D;\r\nimport java.awt.event.MouseAdapter;\r\nimport java.awt.event.MouseEvent;\r\nimport java.awt.event.MouseMotionAdapter;\r\nimport java.util.Observable;\r\nimport java.util.Observer;\r\nimport javax.swing.JPanel;\r\n\r\n\r\npublic class MyPanel extends JPanel implements Observer {\r\n    private Controller controller;\r\n\r\n    public MyPanel(Controller controller, ActionDraw actionDraw) {\r\n        this.controller = controller;\r\n        addMouseListener(new MouseAdapter() {\r\n            @Override\r\n            public void mousePressed(MouseEvent arg0) {\r\n                controller.getPointOne(arg0.getPoint());\r\n            }\r\n        });\r\n        addMouseMotionListener(new MouseMotionAdapter() {\r\n            @Override\r\n            public void mouseDragged(MouseEvent arg0) {\r\n                controller.getPointTwo(arg0.getPoint());\r\n            }\r\n        });\r\n    }\r\n\r\n    @Override\r\n    public void paintComponent(Graphics g) {\r\n        super.paintComponent(g);\r\n        Graphics2D g2 = (Graphics2D) g;\r\n        controller.draw(g2);\r\n    }\r\n\r\n    @Override\r\n    public void update(Observable o, Object arg) {\r\n        repaint();\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/example/view/MyPanel.java b/src/main/java/org/example/view/MyPanel.java
+--- a/src/main/java/org/example/view/MyPanel.java	(revision c40cd86ee12329c27f61270facc788795f5c57b5)
++++ b/src/main/java/org/example/view/MyPanel.java	(date 1731659925452)
+@@ -1,7 +1,8 @@
+ package org.example.view;
+ 
+-import org.example.controller.ActionDraw;
++import org.example.controller.action.ActionDraw;
+ import org.example.controller.Controller;
++import org.example.controller.action.AppAction;
+ 
+ import java.awt.Graphics;
+ import java.awt.Graphics2D;
+@@ -16,7 +17,7 @@
+ public class MyPanel extends JPanel implements Observer {
+     private Controller controller;
+ 
+-    public MyPanel(Controller controller, ActionDraw actionDraw) {
++    public MyPanel(Controller controller, AppAction actionDraw) {
+         this.controller = controller;
+         addMouseListener(new MouseAdapter() {
+             @Override
+Index: src/main/java/org/example/controller/factory/MenuState.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/example/controller/factory/MenuState.java b/src/main/java/org/example/controller/factory/MenuState.java
+new file mode 100644
+--- /dev/null	(date 1731660127079)
++++ b/src/main/java/org/example/controller/factory/MenuState.java	(date 1731660127079)
+@@ -0,0 +1,49 @@
++package org.example.controller.factory;
++
++import org.example.controller.action.ActionDraw;
++import org.example.controller.action.AppAction;
++
++import java.awt.*;
++public class MenuState {
++    private boolean fill;
++    private Color color;
++    private ShapeType shapeType;
++    private AppAction actionDraw;
++    public MenuState(){
++        shapeType = ShapeType.RECTANGULAR;
++        color = Color.BLUE;
++        fill = false;
++    }
++
++    public boolean isFill() {
++        return fill;
++    }
++
++    public void setFill(boolean fill) {
++        this.fill = fill;
++    }
++
++    public Color getColor() {
++        return color;
++    }
++
++    public void setColor(Color color) {
++        this.color = color;
++    }
++
++    public ShapeType getShapeType() {
++        return shapeType;
++    }
++
++    public void setShapeType(ShapeType shapeType) {
++        this.shapeType = shapeType;
++    }
++
++    public AppAction getActionDraw() {
++        return actionDraw;
++    }
++
++    public void setActionDraw(AppAction actionDraw) {
++        this.actionDraw = actionDraw;
++    }
++}
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    id 'java'\r\n}\r\n\r\ngroup = 'org.example'\r\nversion = '1.0-SNAPSHOT'\r\n\r\nrepositories {\r\n    mavenCentral()\r\n}\r\n\r\njava {\r\n    sourceCompatibility = JavaVersion.VERSION_17\r\n    targetCompatibility = JavaVersion.VERSION_17\r\n}\r\n\r\nsourceSets {\r\n    main {\r\n        java.srcDir(\"src/main/java\")\r\n    }\r\n\r\n    test {\r\n        java.srcDir(\"src/test/java\")\r\n    }\r\n}\r\n\r\ndependencies {\r\n//    compileOnly 'org.projectlombok:lombok:1.18.34'\r\n//    annotationProcessor 'org.projectlombok:lombok:1.18.34'\r\n\r\n    testImplementation platform('org.junit:junit-bom:5.9.1')\r\n//    testCompileOnly 'org.projectlombok:lombok:1.18.34'\r\n//    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'\r\n    testImplementation 'org.junit.jupiter:junit-jupiter'\r\n}\r\n\r\ntasks.withType(JavaCompile).configureEach {\r\n    options.encoding = \"UTF-8\"\r\n}\r\n\r\ntasks.withType(Javadoc).configureEach {\r\n    options.encoding = \"UTF-8\"\r\n}\r\n\r\ntasks {\r\n    test {\r\n        testLogging.showExceptions = true\r\n        useJUnitPlatform()\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/build.gradle b/build.gradle
+--- a/build.gradle	(revision c40cd86ee12329c27f61270facc788795f5c57b5)
++++ b/build.gradle	(date 1731655064949)
+@@ -25,12 +25,12 @@
+ }
+ 
+ dependencies {
+-//    compileOnly 'org.projectlombok:lombok:1.18.34'
+-//    annotationProcessor 'org.projectlombok:lombok:1.18.34'
++    compileOnly 'org.projectlombok:lombok:1.18.34'
++    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+ 
+     testImplementation platform('org.junit:junit-bom:5.9.1')
+-//    testCompileOnly 'org.projectlombok:lombok:1.18.34'
+-//    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
++    testCompileOnly 'org.projectlombok:lombok:1.18.34'
++    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
+     testImplementation 'org.junit.jupiter:junit-jupiter'
+ }
+ 
+Index: src/main/java/org/example/model/MyShape.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.example.model;\r\n\r\nimport org.example.model.fill.Fill;\r\nimport org.example.model.fill.FillBehavior;\r\nimport org.example.model.fill.NoFill;\r\n\r\nimport java.awt.Color;\r\nimport java.awt.Graphics2D;\r\nimport java.awt.geom.Point2D;\r\nimport java.awt.geom.Rectangle2D;\r\nimport java.awt.geom.RectangularShape;\r\n\r\npublic class MyShape implements  Cloneable{\r\n    private Color color;\r\n    private RectangularShape shape;\r\n    private FillBehavior fb;\r\n\r\n    public MyShape(RectangularShape shape) {\r\n        this.shape = shape;\r\n        color = Color.GRAY;\r\n        fb = new Fill();\r\n        fb.setColor(color);\r\n        fb.setShape(shape);\r\n    }\r\n\r\n    // TODO: 25.10.2024  Попробовать вызовы через разные конструкторы, затем переделать создание через фабрику\r\n    public MyShape() {\r\n        color = Color.PINK;\r\n        shape = new Rectangle2D.Double();\r\n        fb = new Fill();\r\n        fb.setColor(color);\r\n        fb.setShape(shape);\r\n    }\r\n\r\n    // TODO: 25.10.2024  Попробовать вызовы через разные конструкторы, затем переделать создание через фабрику\r\n    public MyShape(Color color, RectangularShape shape, FillBehavior fb) {\r\n        this.color = color;\r\n        this.shape = shape;\r\n        this.fb = fb;\r\n        this.fb.setShape(shape);\r\n        this.fb.setColor(color);\r\n    }\r\n\r\n    public void setFb(FillBehavior fb) {\r\n        this.fb = fb;\r\n        fb.setShape(shape);\r\n        fb.setColor(color);\r\n    }\r\n\r\n    public void setShape(RectangularShape shape) {\r\n        this.shape = shape;\r\n    }\r\n\r\n    public void setFrame(Point2D x, Point2D y) {\r\n        shape.setFrameFromDiagonal(x, y);\r\n    }\r\n\r\n    void draw(Graphics2D g) {\r\n        fb.draw(g);\r\n    }\r\n    @Override\r\n    public MyShape clone(){\r\n        MyShape clone = new MyShape();\r\n        clone.setFb(fb.clone());\r\n        RectangularShape anotherShape = (RectangularShape) shape.clone();\r\n        clone.setShape(anotherShape);\r\n        clone.fb.setShape(anotherShape);\r\n        return  clone;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/example/model/MyShape.java b/src/main/java/org/example/model/MyShape.java
+--- a/src/main/java/org/example/model/MyShape.java	(revision c40cd86ee12329c27f61270facc788795f5c57b5)
++++ b/src/main/java/org/example/model/MyShape.java	(date 1731658542525)
+@@ -23,7 +23,6 @@
+         fb.setShape(shape);
+     }
+ 
+-    // TODO: 25.10.2024  Попробовать вызовы через разные конструкторы, затем переделать создание через фабрику
+     public MyShape() {
+         color = Color.PINK;
+         shape = new Rectangle2D.Double();
+@@ -32,7 +31,6 @@
+         fb.setShape(shape);
+     }
+ 
+-    // TODO: 25.10.2024  Попробовать вызовы через разные конструкторы, затем переделать создание через фабрику
+     public MyShape(Color color, RectangularShape shape, FillBehavior fb) {
+         this.color = color;
+         this.shape = shape;
+Index: src/main/java/org/example/controller/factory/ShapeCreation.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/example/controller/factory/ShapeCreation.java b/src/main/java/org/example/controller/factory/ShapeCreation.java
+new file mode 100644
+--- /dev/null	(date 1731657211365)
++++ b/src/main/java/org/example/controller/factory/ShapeCreation.java	(date 1731657211365)
+@@ -0,0 +1,37 @@
++package org.example.controller.factory;
++
++import lombok.Setter;
++import org.example.model.MyShape;
++import org.example.model.fill.Fill;
++import org.example.model.fill.FillBehavior;
++import org.example.model.fill.NoFill;
++
++import java.awt.*;
++import java.awt.geom.RectangularShape;
++
++public class ShapeCreation {
++    private static ShapeCreation instance;
++    @Setter
++    private MenuState state;
++    public static synchronized ShapeCreation getInstance(){
++        if (instance == null){
++            instance = new ShapeCreation();
++        }
++        return instance;
++    }
++    private ShapeCreation(){}
++    public void config(MenuState state){
++        this.state = state;
++    }
++
++    public MyShape createShape(){
++        MyShape newShape = new MyShape();
++        RectangularShape shape = state.getShapeType().createShape();
++
++        FillBehavior fillBehavior = state.isFill()? new Fill() : new NoFill();
++        fillBehavior.setColor(state.getColor());
++
++        newShape.setFb(fillBehavior);
++        return newShape;
++    }
++}
+Index: src/main/java/org/example/model/fill/FillBehavior.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.example.model.fill;\r\n\r\nimport java.awt.Color;\r\nimport java.awt.Graphics2D;\r\nimport java.awt.geom.RectangularShape;\r\n\r\npublic interface FillBehavior {\r\n    void draw(Graphics2D g);\r\n\r\n    void setColor(Color c);\r\n\r\n    void setShape(RectangularShape s);\r\n\r\n    FillBehavior clone();\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/example/model/fill/FillBehavior.java b/src/main/java/org/example/model/fill/FillBehavior.java
+--- a/src/main/java/org/example/model/fill/FillBehavior.java	(revision c40cd86ee12329c27f61270facc788795f5c57b5)
++++ b/src/main/java/org/example/model/fill/FillBehavior.java	(date 1731655065200)
+@@ -12,4 +12,5 @@
+     void setShape(RectangularShape s);
+ 
+     FillBehavior clone();
++    //void fill();
+ }
+\ No newline at end of file
+Index: src/main/java/org/example/controller/ActionDraw.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/example/controller/ActionDraw.java b/src/main/java/org/example/controller/action/ActionDraw.java
+rename from src/main/java/org/example/controller/ActionDraw.java
+rename to src/main/java/org/example/controller/action/ActionDraw.java
+--- a/src/main/java/org/example/controller/ActionDraw.java	(revision c40cd86ee12329c27f61270facc788795f5c57b5)
++++ b/src/main/java/org/example/controller/action/ActionDraw.java	(date 1731659420557)
+@@ -1,4 +1,4 @@
+-package org.example.controller;
++package org.example.controller.action;
+ 
+ import org.example.model.Model;
+ import org.example.model.MyShape;
+@@ -6,7 +6,7 @@
+ import java.awt.*;
+ import java.awt.geom.Point2D;
+ 
+-public class ActionDraw {
++public class ActionDraw implements AppAction {
+     private Model model;
+     private MyShape shape;
+     private Point2D firstPoint;
+@@ -30,5 +30,36 @@
+         shape = shape.clone();
+         model.createCurrentShape(shape);
+         model.update();
++
++    }
++    @Override
++    public void  mouseDragged(Point point){
++        firstPoint = point;
++
+     }
++    @Override
++    public void mousePressed(Point point){
++        secondPoint = point;
++
++    }
++
+ }
++
++
++
++
++
++
++
++
++
++//        sampleShape = factory.createShape();
++//        model.addCurrentShape(sampleShape);
++//        model.update();
++//
++//
++//        sampleShape = factory.createShape();
++//        model.addCurrentShape(sampleShape);
++//        model.update();
++
++
