@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.controller.action;
 
 import org.example.model.Model;
 import org.example.model.MyShape;
@@ -6,7 +6,7 @@ import org.example.model.MyShape;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class ActionDraw {
+public class ActionDraw implements AppAction {
     private Model model;
     private MyShape shape;
     private Point2D firstPoint;
@@ -24,7 +24,9 @@ public class ActionDraw {
         firstPoint =  point;
         shape.setFrame(firstPoint, secondPoint);
         model.update();
+
     }
+
     public void createShape (Point point){
         secondPoint =  point;
         shape = shape.clone();
@@ -32,19 +34,15 @@ public class ActionDraw {
         model.update();
 
     }
-//    @Override
-//    public void  mouseDragged(Point point){
-//        firstPoint = point;
-//        sampleShape = factory.createShape();
-//        model.addCurrentShape(sampleShape);
-//        model.update();
-//    }
-//    @Override
-//    public void mousePressed(Point point){
-//        secondPoint = point;
-//        sampleShape = factory.createShape();
-//        model.addCurrentShape(sampleShape);
-//        model.update();
-//    }
+    @Override
+    public void  mouseDragged(Point point){
+        firstPoint = point;
+
+    }
+    @Override
+    public void mousePressed(Point point){
+        secondPoint = point;
+
+    }
 
 }

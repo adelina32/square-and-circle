@@ -23,7 +23,6 @@ public class MyShape implements  Cloneable{
         fb.setShape(shape);
     }
 
-    // TODO: 25.10.2024  Попробовать вызовы через разные конструкторы, затем переделать создание через фабрику
     public MyShape() {
         color = Color.PINK;
         shape = new Rectangle2D.Double();
@@ -32,7 +31,6 @@ public class MyShape implements  Cloneable{
         fb.setShape(shape);
     }
 
-    // TODO: 25.10.2024  Попробовать вызовы через разные конструкторы, затем переделать создание через фабрику
     public MyShape(Color color, RectangularShape shape, FillBehavior fb) {
         this.color = color;
         this.shape = shape;
