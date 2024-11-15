@@ -30,5 +30,21 @@ public class ActionDraw {
         shape = shape.clone();
         model.createCurrentShape(shape);
         model.update();
+
     }
+//    @Override
+//    public void  mouseDragged(Point point){
+//        firstPoint = point;
+//        sampleShape = factory.createShape();
+//        model.addCurrentShape(sampleShape);
+//        model.update();
+//    }
+//    @Override
+//    public void mousePressed(Point point){
+//        secondPoint = point;
+//        sampleShape = factory.createShape();
+//        model.addCurrentShape(sampleShape);
+//        model.update();
+//    }
+
 }

@@ -1,6 +1,9 @@
 package org.example.controller;
 
 import org.example.model.Model;
+
+
+import org.example.model.Model;
 import org.example.model.MyShape;
 import org.example.model.fill.Fill;
 import org.example.model.fill.NoFill;
@@ -44,6 +47,7 @@ public class Controller {
         MenuController menuController = MenuController.getInstance();
         menuController.setActionDraw(actionDraw);
         frame.setJMenuBar(menuController.createMenuBar());
+        frame.revalidate();
 
     }
 

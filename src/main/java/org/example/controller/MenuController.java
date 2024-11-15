@@ -5,7 +5,6 @@ import org.example.model.MyShape;
 import javax.swing.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
-
 public class MenuController {
     private static MenuController instance;
     private JMenuBar menuBar;
