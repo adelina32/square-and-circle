@@ -7,6 +7,7 @@ import org.example.controller.factory.MenuState;
 import org.example.controller.factory.ShapeType;
 
 import javax.swing.*;
+import java.awt.*;
 
 @Getter
 @Setter
@@ -15,9 +16,11 @@ public class MenuController {
     private JMenuBar menuBar;
     private AppAction actionDraw;
     private MenuState state;
+
     private MenuController(){
         menuBar = createMenuBar();
     }
+
     public static MenuController getInstance(){
         if (instance == null){
             instance = new MenuController();
@@ -26,11 +29,12 @@ public class MenuController {
     }
     public JMenuBar createMenuBar(){
         JMenuBar menuBar = new JMenuBar();
+
         JMenu shapeMenu = createShapeMenu();
         menuBar.add(shapeMenu);
 
-        //JMenu colorMenu = new JMenu();
-
+        JMenu colorMenu = createColorMenu();
+        menuBar.add(colorMenu);
 
         return menuBar;
     }
@@ -48,14 +52,35 @@ public class MenuController {
 
         JRadioButtonMenuItem ellipse = new JRadioButtonMenuItem("Эллипс");
         ellipse.addActionListener(e -> state.setShapeType(ShapeType.ELLIPSE));
-
         shapeMenu.add(ellipse);
         group.add(ellipse);
         return shapeMenu;
-
-
-       // JMenu colorMenu = new JMenuBar("Цвета");
-
-
     }
+
+    private JMenu createColorMenu() {
+        JMenu colorMenu = new JMenu("Цвета");
+
+        JMenuItem redItem = new JMenuItem("Красный");
+        redItem.addActionListener(e -> state.setColor(Color.RED));
+        colorMenu.add(redItem);
+
+        JMenuItem greenItem = new JMenuItem("Зеленый");
+        greenItem.addActionListener(e -> state.setColor(Color.GREEN));
+        colorMenu.add(greenItem);
+
+        JMenuItem blueItem = new JMenuItem("Синий");
+        blueItem.addActionListener(e -> state.setColor(Color.BLUE));
+        colorMenu.add(blueItem);
+
+        return colorMenu;
+    }
+
+    public JMenuBar getMenuBar() {
+        return menuBar;
+    }
+
+    public void setAppaction(AppAction actionDraw) {}
+    public void setState(MenuState state) {}
+
 }
+
