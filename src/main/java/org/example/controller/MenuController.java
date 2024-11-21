@@ -58,7 +58,7 @@ public class MenuController {
     }
 
     private JMenu createColorMenu() {
-        JMenu colorMenu = new JMenu("Цвета");
+        JMenu colorMenu = new JMenu("Цвет");
 
         JMenuItem redItem = new JMenuItem("Красный");
         redItem.addActionListener(e -> state.setColor(Color.RED));
@@ -80,7 +80,13 @@ public class MenuController {
     }
 
     public void setAppaction(AppAction actionDraw) {}
-    public void setState(MenuState state) {}
 
+    public void setState(MenuState state) {
+        this.state = state;
+    }
+
+    public MenuState getState() {
+        return state;
+    }
 }
 

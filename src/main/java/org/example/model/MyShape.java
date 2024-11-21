@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
+import java.security.spec.EllipticCurve;
 
 public class MyShape implements  Cloneable{
     private Color color;
@@ -56,6 +57,7 @@ public class MyShape implements  Cloneable{
     void draw(Graphics2D g) {
         fb.draw(g);
     }
+
     @Override
     public MyShape clone(){
         MyShape clone = new MyShape();
@@ -66,4 +68,11 @@ public class MyShape implements  Cloneable{
         return  clone;
     }
 
+    public RectangularShape getShape() {
+        return shape;
+    }
+
+    public Color getColor(){
+        return color;
+    }
 }

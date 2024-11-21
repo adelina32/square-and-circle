@@ -1,6 +1,6 @@
 package org.example.model;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,19 +21,25 @@ public class Model extends Observable {
 
     public void changeShape(Point2D x, Point2D y) {
         currentShape.setFrame(x, y);
-        this.setChanged();
-        this.notifyObservers();
+//        this.setChanged();
+//        this.notifyObservers();
     }
 
     public void draw(Graphics2D g) {
         for (MyShape shape : shapeList){
             shape.draw(g);
         }
-        currentShape.draw(g);
+        //currentShape.draw(g);
     }
     public void update()
     {
         this.setChanged();
         this.notifyObservers();
+    }
+    public void addCurrentShape(MyShape myShape){
+        shapeList.add(myShape);
+    }
+    public List<MyShape> getShapeList() {
+        return shapeList;
     }
 }

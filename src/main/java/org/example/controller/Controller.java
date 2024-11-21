@@ -5,11 +5,6 @@ import org.example.controller.action.AppAction;
 import org.example.controller.factory.MenuState;
 import org.example.controller.factory.ShapeCreation;
 import org.example.model.Model;
-
-
-import org.example.model.Model;
-
-
 import org.example.model.MyShape;
 import org.example.model.fill.NoFill;
 import org.example.view.MyFrame;
@@ -38,12 +33,12 @@ public class Controller {
 
 
     private Controller() {
-
         menuState = new MenuState();
         ShapeCreation shapeCreation = ShapeCreation.getInstance();
         shapeCreation.config(menuState);
 
         model = new Model();
+
         MyShape sampleShape = new MyShape(new Rectangle2D.Double());
         sampleShape.setFb(new NoFill());
         actionDraw = new ActionDraw(model, sampleShape) {
@@ -57,6 +52,7 @@ public class Controller {
 
             }
         };
+
         model.setMyShape(sampleShape);
         panel = new MyPanel(this, actionDraw);
 
@@ -75,11 +71,13 @@ public class Controller {
 
 
     public void getPointOne(Point2D p) {
-        actionDraw.mousePressed((Point) p);
+        AppAction actionDraw1 = menuState.getActionDraw();
+        //actionDraw.mousePressed((Point) p);
     }
 
     public void getPointTwo(Point2D p){
-        actionDraw.mouseDragged((Point) p);
+        AppAction actionDraw1 = menuState.getActionDraw();
+        //actionDraw.mouseDragged((Point) p);
     }
 
     public void draw(Graphics2D g2) {

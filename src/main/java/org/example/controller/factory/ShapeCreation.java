@@ -29,6 +29,7 @@ public class ShapeCreation {
         RectangularShape shape = state.getShapeType().createShape();
 
         FillBehavior fillBehavior = state.isFill()? new Fill() : new NoFill();
+        fillBehavior.setShape(shape);
         fillBehavior.setColor(state.getColor());
 
         newShape.setFb(fillBehavior);
