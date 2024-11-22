@@ -1,7 +1,6 @@
 package org.example.controller;
 
 import org.example.controller.action.ActionDraw;
-import org.example.controller.action.ActionMove;
 import org.example.controller.action.AppAction;
 import org.example.controller.factory.MenuState;
 import org.example.controller.factory.ShapeCreation;
@@ -13,7 +12,6 @@ import org.example.view.MyPanel;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 public class Controller {
     private final Model model;
@@ -37,7 +35,7 @@ public class Controller {
         model = new Model();
 
         MyShape sampleShape = shapeCreation.createShape();
-        menuState.setActionDraw(new ActionDraw(model, sampleShape));
+        menuState.setAction(new ActionDraw(model, sampleShape));
         sampleShape.setFb(new NoFill());
 
         model.setMyShape(sampleShape);
@@ -49,7 +47,9 @@ public class Controller {
         frame.setPanel(panel);
 
         MenuController menuController = MenuController.getInstance();
-        menuController.setState(menuState);
+        menuController.setMenuState(menuState);
+        menuController.setModel(model);
+        menuController.setShape(sampleShape);
         frame.setJMenuBar(menuController.createMenuBar());
         frame.revalidate();
 
@@ -57,12 +57,12 @@ public class Controller {
 
 
     public void getPointOne(Point2D p) {
-        AppAction actionDraw1 = menuState.getActionDraw();
+        AppAction actionDraw1 = menuState.getAction();
         actionDraw1.mousePressed((Point) p);
     }
 
     public void getPointTwo(Point2D p){
-        AppAction actionDraw1 = menuState.getActionDraw();
+        AppAction actionDraw1 = menuState.getAction();
         actionDraw1.mouseDragged((Point) p);
     }
 
