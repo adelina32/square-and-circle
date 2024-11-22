@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.controller.action.ActionDraw;
+import org.example.controller.action.ActionMove;
 import org.example.controller.action.AppAction;
 import org.example.controller.factory.MenuState;
 import org.example.controller.factory.ShapeCreation;
@@ -39,19 +40,9 @@ public class Controller {
 
         model = new Model();
 
-        MyShape sampleShape = new MyShape(new Rectangle2D.Double());
+        MyShape sampleShape = shapeCreation.createShape();
         sampleShape.setFb(new NoFill());
-        actionDraw = new ActionDraw(model, sampleShape) {
-            @Override
-            public void mousePressed(Point point) {
-
-            }
-
-            @Override
-            public void mouseDragged(Point point) {
-
-            }
-        };
+        actionDraw = new ActionDraw(model, sampleShape);
 
         model.setMyShape(sampleShape);
         panel = new MyPanel(this, actionDraw);
@@ -72,12 +63,12 @@ public class Controller {
 
     public void getPointOne(Point2D p) {
         AppAction actionDraw1 = menuState.getActionDraw();
-        //actionDraw.mousePressed((Point) p);
+        actionDraw.mousePressed((Point) p);
     }
 
     public void getPointTwo(Point2D p){
         AppAction actionDraw1 = menuState.getActionDraw();
-        //actionDraw.mouseDragged((Point) p);
+        actionDraw.mouseDragged((Point) p);
     }
 
     public void draw(Graphics2D g2) {

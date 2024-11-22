@@ -21,7 +21,7 @@ public class ActionDraw implements AppAction {
     public ActionDraw(Model model, MyShape shape) {
         this.model = model;
         this.shape = shape;
-        //shapeCreation = ShapeCreation.getInstance();
+        shapeCreation = ShapeCreation.getInstance();
     }
     public  void  stretchShape (Point point){
         firstPoint = point;
@@ -33,24 +33,22 @@ public class ActionDraw implements AppAction {
     public void createShape (Point point){
         secondPoint = point;
         shape = shape.clone();
-        //shape = ShapeCreation.getInstance().createShape();
         model.createCurrentShape(shape);
         model.update();
 
     }
     @Override
     public void mouseDragged(Point point){
-        firstPoint = point;
-        shape.setFrame(firstPoint, firstPoint);
+        secondPoint = point;
+        shape.setFrame(firstPoint, secondPoint);
         model.update();
     }
 
     @Override
     public void mousePressed(Point point){
-        secondPoint = point;
-        ShapeCreation shapeCreation = ShapeCreation.getInstance();; ///что с этим делать
-        shape = shapeCreation.createShape();                        ///и с этим
+        firstPoint = point;
+        shape = shapeCreation.createShape();
         model.addCurrentShape(shape);
-        model.update();;
+        model.update();
     }
 }

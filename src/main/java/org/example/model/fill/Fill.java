@@ -15,6 +15,11 @@ public class Fill implements FillBehavior {
     }
 
     @Override
+    public Color getColor() {
+        return color;
+    }
+
+    @Override
     public void draw(Graphics2D g) {
         Paint paint = g.getPaint();
         g.setPaint(color);
@@ -25,6 +30,11 @@ public class Fill implements FillBehavior {
     @Override
     public void setShape(RectangularShape s) {
         shape = s;
+    }
+
+    @Override
+    public RectangularShape getShape() {
+        return shape;
     }
 
     @Override

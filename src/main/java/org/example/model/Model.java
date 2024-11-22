@@ -21,15 +21,12 @@ public class Model extends Observable {
 
     public void changeShape(Point2D x, Point2D y) {
         currentShape.setFrame(x, y);
-//        this.setChanged();
-//        this.notifyObservers();
     }
 
     public void draw(Graphics2D g) {
         for (MyShape shape : shapeList){
             shape.draw(g);
         }
-        //currentShape.draw(g);
     }
     public void update()
     {
