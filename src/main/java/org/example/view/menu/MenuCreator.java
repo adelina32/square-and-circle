@@ -65,6 +65,13 @@ public class MenuCreator {
         AppCommand colorCommand = new SwitchColor(menuState, false, null);
         menuItems.add(new CommandActionListener("Цвет", colorIco, colorCommand));
 
+        URL drawUrl = getClass().getClassLoader().getResource("resources/ico/draw.png");
+        ImageIcon drawIco = drawUrl == null ? null : new ImageIcon(drawUrl);
+        AppCommand drawCommand = new SwitchColor(menuState, false, null);
+        menuItems.add(new CommandActionListener("Рисовать", drawIco, drawCommand));
+
+
+
         return menuItems;
     }
 
