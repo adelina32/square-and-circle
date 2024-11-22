@@ -1,8 +1,10 @@
 package org.example.view.menu;
 
-public class CommandActionListener {
-    public static final String COMMAND = "Command";
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 
+public class CommandActionListener extends AbstractAction {
+    public static final String COMMAND = "Command";
     public CommandActionListener(String name, Icon icon, AppCommand command) {
         super(name, icon);
         putValue(COMMAND, command);
@@ -10,5 +12,11 @@ public class CommandActionListener {
     public CommandActionListener(AppCommand command) {
         super();
         putValue(COMMAND, command);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        AppCommand command = (AppCommand) getValue(COMMAND);
+        command.execute();
     }
 }

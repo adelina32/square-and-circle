@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.view.menu;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,24 +12,26 @@ import org.example.model.MyShape;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
+import java.util.ArrayList;
 
 @Getter
 @Setter
-public class MenuController {
-    private static MenuController instance;
+public class MenuCreator {
+    private static MenuCreator instance;
     private JMenuBar menuBar;
     private AppAction action;
     private MenuState menuState;
     private Model model;
     private MyShape shape;
 
-    private MenuController(){
+    private MenuCreator(){
         menuBar = createMenuBar();
     }
 
-    public static MenuController getInstance(){
+    public static MenuCreator getInstance(){
         if (instance == null){
-            instance = new MenuController();
+            instance = new MenuCreator();
         }
         return instance;
     }
@@ -46,6 +48,24 @@ public class MenuController {
         menuBar.add(actionMenu);
 
         return menuBar;
+    }
+
+    public JToolBar createToolBar(){
+        ArrayList<Action> subMenuItems = createToolBarItems();
+        JToolBar jToolBar = new JToolBar(JToolBar.VERTICAL);
+        subMenuItems.forEach(jToolBar::add);
+        return jToolBar;
+    }
+
+    private ArrayList<Action> createToolBarItems() {
+        ArrayList<Action> menuItems = new ArrayList<>();
+
+        URL colorUrl = getClass().getClassLoader().getResource("ico/color.png");
+        ImageIcon colorIco = colorUrl == null ? null : new ImageIcon(colorUrl);
+        AppCommand colorCommand = new SwitchColor(menuState, false, null);
+        menuItems.add(new CommandActionListener("Цвет", colorIco, colorCommand));
+
+        return menuItems;
     }
 
     private JMenu createActionMenu() {
@@ -96,6 +116,10 @@ public class MenuController {
         JMenuItem blueItem = new JMenuItem("Синий");
         blueItem.addActionListener(e -> menuState.setColor(Color.BLUE));
         colorMenu.add(blueItem);
+
+        JMenuItem rgbItem = new JMenuItem("RGB");
+        rgbItem.addActionListener(new CommandActionListener(new SwitchColor(menuState, false, null)));
+        colorMenu.add(rgbItem);
 
         return colorMenu;
     }

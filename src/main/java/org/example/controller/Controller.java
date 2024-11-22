@@ -9,6 +9,7 @@ import org.example.model.MyShape;
 import org.example.model.fill.NoFill;
 import org.example.view.MyFrame;
 import org.example.view.MyPanel;
+import org.example.view.menu.MenuCreator;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -46,15 +47,13 @@ public class Controller {
         MyFrame frame = new MyFrame();
         frame.setPanel(panel);
 
-        MenuController menuController = MenuController.getInstance();
-        menuController.setMenuState(menuState);
-        menuController.setModel(model);
-        menuController.setShape(sampleShape);
-        frame.setJMenuBar(menuController.createMenuBar());
-        frame.revalidate();
+        MenuCreator menuCreator = MenuCreator.getInstance();
+        menuCreator.setMenuState(menuState);
+        menuCreator.setModel(model);
 
+        frame.setJMenuBar(menuCreator.createMenuBar());
+        frame.add(menuCreator.createToolBar(), BorderLayout.WEST);
     }
-
 
     public void getPointOne(Point2D p) {
         AppAction actionDraw1 = menuState.getAction();
