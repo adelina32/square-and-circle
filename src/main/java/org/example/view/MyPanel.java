@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 public class MyPanel extends JPanel implements Observer {
     private Controller controller;
 
-    public MyPanel(Controller controller, AppAction actionDraw) {
+    public MyPanel(Controller controller) {
         this.controller = controller;
         addMouseListener(new MouseAdapter() {
             @Override

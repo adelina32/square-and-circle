@@ -14,7 +14,7 @@ import java.awt.*;
 public class MenuController {
     private static MenuController instance;
     private JMenuBar menuBar;
-    private AppAction actionDraw;
+    private AppAction action;
     private MenuState state;
 
     private MenuController(){
@@ -74,6 +74,8 @@ public class MenuController {
 
         return colorMenu;
     }
+
+
 
     public JMenuBar getMenuBar() {
         return menuBar;

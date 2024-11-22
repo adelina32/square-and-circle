@@ -14,5 +14,33 @@ public class ActionMove implements AppAction {
         this.model = model;
     }
 
+    public void mousePressed(Point point) {
+        shape = model.getShapeList()
+                .stream()
+                .filter(myShape -> myShape.getShape().contains(point))
+                .findFirst()
+                .orElse(null);
+    }
 
+    public void mouseDragged(Point point) {
+
+        if (shape == null){
+            return;
+        }
+
+        double deltaX = secondPoint.getX() - firstPoint.getX();
+        double deltaY = secondPoint.getY() - firstPoint.getY();
+
+        Point2D newShapeFirstPoint = new Point2D.Double();
+        newShapeFirstPoint.setLocation(shape.getShape().getMaxX() + deltaX,
+                shape.getShape().getMaxY() + deltaY);
+
+        Point2D newShapeSecondPoint = new Point2D.Double();
+        newShapeSecondPoint.setLocation(shape.getShape().getMinX() + deltaX,
+                shape.getShape().getMinY() + deltaY);
+
+        shape.getShape().setFrameFromDiagonal(newShapeFirstPoint, newShapeSecondPoint);
+        firstPoint = secondPoint;
+        model.update();
+    }
 }

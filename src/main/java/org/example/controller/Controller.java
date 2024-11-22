@@ -16,14 +16,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 public class Controller {
-    private Model model;
-    private MyFrame frame;
-    private MyPanel panel;
-    private Point2D firstPoint;
-    private Point2D secondPoint;
+    private final Model model;
     private static Controller instance;
-    private AppAction actionDraw;
-    private MenuState menuState;
+    private final MenuState menuState;
 
     public static synchronized Controller getInstance(){
         if (instance == null){
@@ -38,22 +33,22 @@ public class Controller {
         ShapeCreation shapeCreation = ShapeCreation.getInstance();
         shapeCreation.config(menuState);
 
+
         model = new Model();
 
         MyShape sampleShape = shapeCreation.createShape();
+        menuState.setActionDraw(new ActionDraw(model, sampleShape));
         sampleShape.setFb(new NoFill());
-        actionDraw = new ActionDraw(model, sampleShape);
 
         model.setMyShape(sampleShape);
-        panel = new MyPanel(this, actionDraw);
+        MyPanel panel = new MyPanel(this);
 
         model.addObserver(panel);
 
-        frame = new MyFrame();
+        MyFrame frame = new MyFrame();
         frame.setPanel(panel);
 
         MenuController menuController = MenuController.getInstance();
-        menuController.setAppaction(actionDraw);
         menuController.setState(menuState);
         frame.setJMenuBar(menuController.createMenuBar());
         frame.revalidate();
@@ -63,12 +58,12 @@ public class Controller {
 
     public void getPointOne(Point2D p) {
         AppAction actionDraw1 = menuState.getActionDraw();
-        actionDraw.mousePressed((Point) p);
+        actionDraw1.mousePressed((Point) p);
     }
 
     public void getPointTwo(Point2D p){
         AppAction actionDraw1 = menuState.getActionDraw();
-        actionDraw.mouseDragged((Point) p);
+        actionDraw1.mouseDragged((Point) p);
     }
 
     public void draw(Graphics2D g2) {
