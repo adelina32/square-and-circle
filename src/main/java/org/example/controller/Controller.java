@@ -4,6 +4,7 @@ import org.example.controller.action.ActionDraw;
 import org.example.controller.action.AppAction;
 import org.example.controller.factory.MenuState;
 import org.example.controller.factory.ShapeCreation;
+import org.example.controller.state.UndoMachine;
 import org.example.model.Model;
 import org.example.model.MyShape;
 import org.example.model.fill.NoFill;
@@ -18,6 +19,7 @@ public class Controller {
     private final Model model;
     private static Controller instance;
     private final MenuState menuState;
+    private UndoMachine undoMachine;
 
     public static synchronized Controller getInstance(){
         if (instance == null){
@@ -26,12 +28,10 @@ public class Controller {
         return instance;
     }
 
-
     private Controller() {
         menuState = new MenuState();
         ShapeCreation shapeCreation = ShapeCreation.getInstance();
         shapeCreation.config(menuState);
-
 
         model = new Model();
 
@@ -58,6 +58,9 @@ public class Controller {
     public void getPointOne(Point2D p) {
         AppAction actionDraw1 = menuState.getAction();
         actionDraw1.mousePressed((Point) p);
+        undoMachine.add(actionDraw1.cloneAction());
+        undoMachine.updateButtons();
+
     }
 
     public void getPointTwo(Point2D p){

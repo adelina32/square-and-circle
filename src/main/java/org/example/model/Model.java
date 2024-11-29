@@ -39,4 +39,11 @@ public class Model extends Observable {
     public List<MyShape> getShapeList() {
         return shapeList;
     }
+
+    public void removeLastShape() {
+    }
+
+    public MyShape getLastShape() {
+        return null;
+    }
 }

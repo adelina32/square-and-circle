@@ -45,4 +45,19 @@ public class ActionMove implements AppAction {
         firstPoint = secondPoint;
         model.update();
     }
+
+    @Override
+    public void execute() {
+
+    }
+
+    @Override
+    public void unexecute() {
+
+    }
+
+    @Override
+    public AppAction cloneAction() {
+        return null;
+    }
 }

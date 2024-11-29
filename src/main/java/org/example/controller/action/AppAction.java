@@ -9,5 +9,4 @@ public interface AppAction {
     void unexecute();
     AppAction cloneAction();
 
-
 }
