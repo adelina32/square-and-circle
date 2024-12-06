@@ -47,6 +47,10 @@ public class UndoMachine {
         undoRedoState.clearHistory();
         undoRedoState.addAction(action);
         //TODO: Определить переход по состоянию
+        applyActionToState(action);
         undoRedoState = new StateEnableUndoDisableRedo(undoRedoState.getUndoActivityList(), undoRedoState.getUndoActivityList());
+    }
+
+    private void applyActionToState(AppAction action) {
     }
 }

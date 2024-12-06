@@ -7,6 +7,7 @@ import org.example.controller.action.ActionMove;
 import org.example.controller.action.AppAction;
 import org.example.controller.factory.MenuState;
 import org.example.controller.factory.ShapeType;
+import org.example.controller.state.UndoMachine;
 import org.example.model.Model;
 import org.example.model.MyShape;
 
@@ -60,52 +61,52 @@ public class MenuCreator {
     private ArrayList<Action> createToolBarItems() {
         ArrayList<Action> menuItems = new ArrayList<>();
 
-        URL colorUrl = getClass().getClassLoader().getResource("ico/color.png");
+        URL colorUrl = getClass().getClassLoader().getResource("ico/color_16x16.png");
         ImageIcon colorIco = colorUrl == null ? null : new ImageIcon(colorUrl);
         AppCommand colorCommand = new SwitchColor(menuState, false, null);
         menuItems.add(new CommandActionListener("Цвет", colorIco, colorCommand));
 
 
-        URL drawUrl = getClass().getClassLoader().getResource("ico/draw.png");
+        URL drawUrl = getClass().getClassLoader().getResource("ico/draw_16x16.png");
         ImageIcon drawIco = drawUrl == null ? null : new ImageIcon(drawUrl);
         AppCommand drawCommand = new SwitchAction(new ActionDraw(model, shape), menuState);
         menuItems.add(new CommandActionListener("Рисовать", drawIco, drawCommand));
 
-        URL moveUrl = getClass().getClassLoader().getResource("ico/move.png");
+        URL moveUrl = getClass().getClassLoader().getResource("ico/move_16x16.png");
         ImageIcon moveIco = moveUrl == null ? null : new ImageIcon(moveUrl);
         AppCommand moveCommand = new SwitchAction(new ActionMove(model), menuState);
         menuItems.add(new CommandActionListener("Двигать", moveIco, moveCommand));
 
 
-//        URL redoUrl = getClass().getClassLoader().getResource("ico/redo.png");
-//        ImageIcon redoIco = redoUrl == null ? null : new ImageIcon(redoUrl);
-//        AppCommand redoCommand = new SwitchAction();
-//        menuItems.add(new CommandActionListener("Вперёд", redoIco, redoCommand));
-//
-//        URL undoUrl = getClass().getClassLoader().getResource("ico/draw.png");
-//        ImageIcon undoIco = undoUrl == null ? null : new ImageIcon(undoUrl);
-//        AppCommand undoCommand = new SwitchAction(menuState, false, null);
-//        menuItems.add(new CommandActionListener("Назад", undoIco, undoCommand));
+        URL redoUrl = getClass().getClassLoader().getResource("ico/redo_16x16.png");
+        ImageIcon redoIco = redoUrl == null ? null : new ImageIcon(redoUrl);
+        AppCommand redoCommand = new SwitchRedo(new UndoMachine());
+        menuItems.add(new CommandActionListener("Вперёд", redoIco, redoCommand));
+
+        URL undoUrl = getClass().getClassLoader().getResource("ico/undo_16x16.png");
+        ImageIcon undoIco = undoUrl == null ? null : new ImageIcon(undoUrl);
+        AppCommand undoCommand = new SwitchUndo(new UndoMachine());
+        menuItems.add(new CommandActionListener("Назад", undoIco, undoCommand));
 
 
-        URL ellipseUrl = getClass().getClassLoader().getResource("ico/ellipse.png");
+        URL ellipseUrl = getClass().getClassLoader().getResource("ico/ellipse_16x16.png");
         ImageIcon ellipseIco = ellipseUrl == null ? null : new ImageIcon(ellipseUrl);
         AppCommand ellipseCommand = new SwitchShape(menuState, ShapeType.ELLIPSE);
         menuItems.add(new CommandActionListener("Эллипс", ellipseIco, ellipseCommand));
 
-        URL rectangularUrl = getClass().getClassLoader().getResource("ico/rectangular.png");
+        URL rectangularUrl = getClass().getClassLoader().getResource("ico/rectangular_16x16.png");
         ImageIcon rectangularIco = rectangularUrl == null ? null : new ImageIcon(rectangularUrl);
         AppCommand rectangularCommand = new SwitchShape(menuState, ShapeType.RECTANGULAR);
         menuItems.add(new CommandActionListener("Прямоугольник", rectangularIco, rectangularCommand));
 
 
 
-        URL fillUrl = getClass().getClassLoader().getResource("ico/fill.png");
+        URL fillUrl = getClass().getClassLoader().getResource("ico/fill_16x16.png");
         ImageIcon fillIco = fillUrl == null ? null : new ImageIcon(fillUrl);
         AppCommand fillCommand = new SwitchFill(menuState, true);
         menuItems.add(new CommandActionListener("Заливать", fillIco, fillCommand));
 
-        URL no_fillUrl = getClass().getClassLoader().getResource("ico/no_fill.png");
+        URL no_fillUrl = getClass().getClassLoader().getResource("ico/no_fill_16x16.png");
         ImageIcon no_fillIco = no_fillUrl == null ? null : new ImageIcon(no_fillUrl);
         AppCommand no_fillCommand = new SwitchFill(menuState, false);
         menuItems.add(new CommandActionListener("Не заливать", no_fillIco, no_fillCommand));
