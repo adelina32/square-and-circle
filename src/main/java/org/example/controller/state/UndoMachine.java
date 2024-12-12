@@ -6,7 +6,7 @@ import org.example.view.menu.CommandActionListener;
 
 import java.util.LinkedList;
 @Setter
-public class UndoMachine {
+public class UndoMachine {//
     private UndoRedoState undoRedoState;
     private CommandActionListener undo;
     private CommandActionListener redo;
@@ -14,7 +14,7 @@ public class UndoMachine {
     public UndoMachine() {
         LinkedList<AppAction> undoList = new LinkedList<>();
         LinkedList<AppAction> redoList = new LinkedList<>();
-        undoRedoState = new StateDisableUndoDisableRedo(undoList, redoList);
+        undoRedoState = new StateDisableUndoDisableRedo(undoList, redoList); //обе откл
     }
 
     public void executeRedo() {
@@ -26,22 +26,21 @@ public class UndoMachine {
     }
 
     public boolean isEnableUndo() {
-        return !undoRedoState.getUndoActivityList().isEmpty();
+        return !undoRedoState.getUndoActivityList().isEmpty(); //есть ли доступные действия для отмены
     }
 
 
     public boolean isEnableRedo() {
-        return !undoRedoState.getRedoActivityList().isEmpty();
+        return !undoRedoState.getRedoActivityList().isEmpty(); //...для повтора
     }
 
     public void add(AppAction action) {
-        undoRedoState.clearHistory();
+        undoRedoState.clearHistory(); //очистка списка действий
         undoRedoState.addAction(action);
         undoRedoState = new StateEnableUndoDisableRedo(undoRedoState.getUndoActivityList(), undoRedoState.getRedoActivityList());
     }
     public void updateButtons() {
-        undo.setEnabled(isEnableUndo());
+        undo.setEnabled(isEnableUndo()); // обновление кнопок
         redo.setEnabled(isEnableRedo());
-
     }
 }

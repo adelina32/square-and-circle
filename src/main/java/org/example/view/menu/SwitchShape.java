@@ -4,8 +4,8 @@ import org.example.controller.factory.MenuState;
 import org.example.controller.factory.ShapeType;
 
 public class SwitchShape implements AppCommand{
-    private MenuState state;
-    private ShapeType shapeType;
+    private final MenuState state;
+    private final ShapeType shapeType;
     public SwitchShape(MenuState state, ShapeType shapeType){
         this.state = state;
         this.shapeType = shapeType;

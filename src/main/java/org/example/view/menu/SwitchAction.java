@@ -7,7 +7,7 @@ import org.example.controller.factory.MenuState;
 @AllArgsConstructor
 public class SwitchAction implements AppCommand
 {
-    private AppAction appAction;
+    private AppAction appAction;// установка действия
     private MenuState menuState;
     @Override
     public void execute() {

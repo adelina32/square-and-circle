@@ -4,7 +4,7 @@ import org.example.controller.action.AppAction;
 
 import java.util.LinkedList;
 
-public class StateEnableUndoEnableRedo extends UndoRedoState {
+public class StateEnableUndoEnableRedo extends UndoRedoState {//
 
     protected StateEnableUndoEnableRedo(LinkedList<AppAction> undoActivityList, LinkedList<AppAction> redoActivity) {
         super(undoActivityList, redoActivity);
@@ -14,7 +14,7 @@ public class StateEnableUndoEnableRedo extends UndoRedoState {
     public UndoRedoState undo() {
         LinkedList<AppAction> undoActivityList = getUndoActivityList();
         LinkedList<AppAction> redoActivityList = getRedoActivityList();
-        AppAction action = undoActivityList.pollLast();
+        AppAction action = undoActivityList.pollLast(); // отмена вкл
         if (action != null) {
             redoActivityList.add(action);
             action.unexecute();
@@ -28,7 +28,7 @@ public class StateEnableUndoEnableRedo extends UndoRedoState {
     public UndoRedoState redo() {
         LinkedList<AppAction> undoActivityList = getUndoActivityList();
         LinkedList<AppAction> redoActivityList = getRedoActivityList();
-        AppAction action = redoActivityList.pollLast();
+        AppAction action = redoActivityList.pollLast(); // повтор вкл
         if (action != null) {
             undoActivityList.add(action);
             action.execute();

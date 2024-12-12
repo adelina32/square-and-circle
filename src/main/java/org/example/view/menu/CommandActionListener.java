@@ -17,7 +17,7 @@ public class CommandActionListener  extends  AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        AppCommand command = (AppCommand) getValue(COMMAND);
+        AppCommand command = (AppCommand) getValue(COMMAND);//работоспособность кнопок
         command.execute();
     }
 }

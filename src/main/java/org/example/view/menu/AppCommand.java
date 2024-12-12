@@ -4,5 +4,4 @@ import org.example.controller.action.AppAction;
 
 public interface AppCommand {
     void execute();
-
 }

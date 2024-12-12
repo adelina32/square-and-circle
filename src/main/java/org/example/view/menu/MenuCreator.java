@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 @Getter
 @Setter
-public class MenuCreator {
+public class MenuCreator {//
     private static MenuCreator instance;
     private JMenuBar menuBar;
     private AppAction action;
@@ -110,11 +110,11 @@ public class MenuCreator {
         ImageIcon redoIco = redoUrl == null ? null : new ImageIcon(redoUrl);
         AppCommand redoCommand = new SwitchRedo(undoMachine);
         CommandActionListener redoListener = new CommandActionListener("Вперед-назад", redoIco, redoCommand);
-        menuItems.add(redoListener);
+        menuItems.add(redoListener);//отображение и реакция на действие
 
 
         undoMachine.setUndo(undoListener);
-        undoListener.setEnabled(false);
+        undoListener.setEnabled(false);//откл если нет действий
         undoMachine.setRedo(redoListener);
         redoListener.setEnabled(false);
 

@@ -16,7 +16,7 @@ import org.example.view.menu.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 @AllArgsConstructor
-public class Controller {
+public class Controller {//
     private final Model model;
     private static Controller instance;
     private final MenuState menuState;
@@ -39,31 +39,30 @@ public class Controller {
         MyShape sampleShape = shapeCreation.createShape();
         menuState.setAction(new ActionDraw(model, sampleShape));
         sampleShape.setFb(new NoFill());
+        model.setMyShape(sampleShape); //образец
 
         menuState.setAction(new ActionDraw(model , sampleShape));
 
-        model.setMyShape(sampleShape);
         MyPanel panel = new MyPanel(this);
-
-        model.addObserver(panel);
-
         MyFrame frame = new MyFrame();
         frame.setPanel(panel);
 
-        undoMachine1 = new UndoMachine(); //
+        model.addObserver(panel);
+
+        undoMachine1 = new UndoMachine();
 
         MenuCreator menuCreator = MenuCreator.getInstance();
         menuCreator.setMenuState(menuState);
         menuCreator.setModel(model);
         menuCreator.setUndoMachine(undoMachine1);
 
-        menuCreator.setState(menuState); //
-        menuCreator.setUndoMachine(undoMachine1);  //
-        menuCreator.setModel(model);  //
+        menuCreator.setState(menuState);
+        menuCreator.setUndoMachine(undoMachine1);
+        menuCreator.setModel(model);
 
         frame.setJMenuBar(menuCreator.createMenuBar());
         frame.add(menuCreator.createToolBar(), BorderLayout.WEST);
-        frame.revalidate(); //
+        frame.revalidate(); //перерисовка
 
     }
 

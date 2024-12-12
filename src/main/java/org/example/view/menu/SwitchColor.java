@@ -15,5 +15,4 @@ public class SwitchColor implements AppCommand {
         Color color = useDefault ? defaultColor : JColorChooser.showDialog(null, "Выбор цвета", Color.BLACK);
         menuState.setColor(color);
     }
-
 }

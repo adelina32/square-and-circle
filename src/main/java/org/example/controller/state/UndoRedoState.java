@@ -1,6 +1,4 @@
 package org.example.controller.state;
-
-import lombok.Getter;
 import org.example.controller.action.AppAction;
 
 import java.util.LinkedList;
@@ -11,13 +9,11 @@ public abstract class UndoRedoState {
     public LinkedList<AppAction> getUndoActivityList() {
         return undoActivityList;
     }
-
-    private final LinkedList<AppAction> undoActivityList;
-
     public LinkedList<AppAction> getRedoActivityList() {
         return redoActivityList;
     }
 
+    private final LinkedList<AppAction> undoActivityList;
     private final LinkedList<AppAction> redoActivityList;
 
     protected UndoRedoState(LinkedList<AppAction> undoActivityList, LinkedList<AppAction> redoActivity) {
@@ -29,7 +25,7 @@ public abstract class UndoRedoState {
     public abstract UndoRedoState redo();
 
     public void clearHistory(){
-        redoActivityList.clear();
+        redoActivityList.clear(); // после нового действия, список старых не доступен
     }
     public  void addAction(AppAction action){
         if(undoActivityList.size() != MAX_UNDO){
