@@ -3,8 +3,9 @@ package org.example.view.menu;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class CommandActionListener extends AbstractAction {
+public class CommandActionListener  extends  AbstractAction {
     public static final String COMMAND = "Command";
+
     public CommandActionListener(String name, Icon icon, AppCommand command) {
         super(name, icon);
         putValue(COMMAND, command);

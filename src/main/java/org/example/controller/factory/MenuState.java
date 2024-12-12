@@ -18,5 +18,4 @@ public class MenuState {
         color = Color.BLUE;
         fill = false;
     }
-
 }

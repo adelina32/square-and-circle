@@ -5,10 +5,9 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class ActionMove implements AppAction {
-    private Model model;
+    private final Model model;
     private MyShape shape;
     private Point firstPoint;
-    private Point secondPoint;
 
     public ActionMove(Model model) {
         this.model = model;
@@ -25,13 +24,12 @@ public class ActionMove implements AppAction {
     }
 
     public void mouseDragged(Point point) {
-        secondPoint = point;
         if (shape == null){
             return;
         }
 
-        double deltaX = secondPoint.getX() - firstPoint.getX();
-        double deltaY = secondPoint.getY() - firstPoint.getY();
+        double deltaX = point.getX() - firstPoint.getX();
+        double deltaY = point.getY() - firstPoint.getY();
 
         Point2D newShapeFirstPoint = new Point2D.Double();
         newShapeFirstPoint.setLocation(shape.getShape().getMaxX() + deltaX,
@@ -42,19 +40,15 @@ public class ActionMove implements AppAction {
                 shape.getShape().getMinY() + deltaY);
 
         shape.getShape().setFrameFromDiagonal(newShapeFirstPoint, newShapeSecondPoint);
-        firstPoint = secondPoint;
+        firstPoint = point;
         model.update();
     }
 
     @Override
-    public void execute() {
-
-    }
+    public void execute() {}
 
     @Override
-    public void unexecute() {
-
-    }
+    public void unexecute() {}
 
     @Override
     public AppAction cloneAction() {

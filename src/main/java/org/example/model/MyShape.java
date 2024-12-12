@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.RectangularShape;
 
-public class MyShape implements  Cloneable{
+public class MyShape implements Cloneable{
     private FillBehavior fb;
 
     public void setFb(FillBehavior fb) {

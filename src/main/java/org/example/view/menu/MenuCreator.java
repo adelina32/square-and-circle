@@ -12,7 +12,6 @@ import org.example.model.Model;
 import org.example.model.MyShape;
 
 import javax.swing.*;
-import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -25,6 +24,7 @@ public class MenuCreator {
     private MenuState menuState;
     private Model model;
     private MyShape shape;
+    private UndoMachine undoMachine;
 
     private MenuCreator(){
         menuBar = createMenuBar();
@@ -78,17 +78,6 @@ public class MenuCreator {
         menuItems.add(new CommandActionListener("Двигать", moveIco, moveCommand));
 
 
-        URL redoUrl = getClass().getClassLoader().getResource("ico/redo_16x16.png");
-        ImageIcon redoIco = redoUrl == null ? null : new ImageIcon(redoUrl);
-        AppCommand redoCommand = new SwitchRedo(new UndoMachine());
-        menuItems.add(new CommandActionListener("Вперёд", redoIco, redoCommand));
-
-        URL undoUrl = getClass().getClassLoader().getResource("ico/undo_16x16.png");
-        ImageIcon undoIco = undoUrl == null ? null : new ImageIcon(undoUrl);
-        AppCommand undoCommand = new SwitchUndo(new UndoMachine());
-        menuItems.add(new CommandActionListener("Назад", undoIco, undoCommand));
-
-
         URL ellipseUrl = getClass().getClassLoader().getResource("ico/ellipse_16x16.png");
         ImageIcon ellipseIco = ellipseUrl == null ? null : new ImageIcon(ellipseUrl);
         AppCommand ellipseCommand = new SwitchShape(menuState, ShapeType.ELLIPSE);
@@ -100,7 +89,6 @@ public class MenuCreator {
         menuItems.add(new CommandActionListener("Прямоугольник", rectangularIco, rectangularCommand));
 
 
-
         URL fillUrl = getClass().getClassLoader().getResource("ico/fill_16x16.png");
         ImageIcon fillIco = fillUrl == null ? null : new ImageIcon(fillUrl);
         AppCommand fillCommand = new SwitchFill(menuState, true);
@@ -110,6 +98,25 @@ public class MenuCreator {
         ImageIcon no_fillIco = no_fillUrl == null ? null : new ImageIcon(no_fillUrl);
         AppCommand no_fillCommand = new SwitchFill(menuState, false);
         menuItems.add(new CommandActionListener("Не заливать", no_fillIco, no_fillCommand));
+
+
+        URL undoUrl = getClass().getClassLoader().getResource("ico/undo_16x16.png");
+        ImageIcon undoIco = undoUrl == null ? null : new ImageIcon(undoUrl);
+        AppCommand undoCommand = new SwitchUndo(undoMachine);
+        CommandActionListener undoListener = new CommandActionListener("Вперед-назад", undoIco, undoCommand);
+        menuItems.add(undoListener);
+
+        URL redoUrl = getClass().getClassLoader().getResource("ico/redo_16x16.png");
+        ImageIcon redoIco = redoUrl == null ? null : new ImageIcon(redoUrl);
+        AppCommand redoCommand = new SwitchRedo(undoMachine);
+        CommandActionListener redoListener = new CommandActionListener("Вперед-назад", redoIco, redoCommand);
+        menuItems.add(redoListener);
+
+
+        undoMachine.setUndo(undoListener);
+        undoListener.setEnabled(false);
+        undoMachine.setRedo(redoListener);
+        redoListener.setEnabled(false);
 
         return menuItems;
     }
@@ -150,24 +157,13 @@ public class MenuCreator {
 
     private JMenu createColorMenu() {
         JMenu colorMenu = new JMenu("Цвет");
-
-        JMenuItem redItem = new JMenuItem("Красный");
-        redItem.addActionListener(e -> menuState.setColor(Color.RED));
-        colorMenu.add(redItem);
-
-        JMenuItem greenItem = new JMenuItem("Зеленый");
-        greenItem.addActionListener(e -> menuState.setColor(Color.GREEN));
-        colorMenu.add(greenItem);
-
-        JMenuItem blueItem = new JMenuItem("Синий");
-        blueItem.addActionListener(e -> menuState.setColor(Color.BLUE));
-        colorMenu.add(blueItem);
-
         JMenuItem rgbItem = new JMenuItem("RGB");
         rgbItem.addActionListener(new CommandActionListener(new SwitchColor(menuState, false, null)));
         colorMenu.add(rgbItem);
 
         return colorMenu;
     }
-}
 
+    public void setState(MenuState menuState) {
+    }
+}

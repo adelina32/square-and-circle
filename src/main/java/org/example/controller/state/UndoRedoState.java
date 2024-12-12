@@ -7,9 +7,17 @@ import java.util.LinkedList;
 
 public abstract class UndoRedoState {
     private static final int MAX_UNDO = 50;
-    @Getter
+
+    public LinkedList<AppAction> getUndoActivityList() {
+        return undoActivityList;
+    }
+
     private final LinkedList<AppAction> undoActivityList;
-    @Getter
+
+    public LinkedList<AppAction> getRedoActivityList() {
+        return redoActivityList;
+    }
+
     private final LinkedList<AppAction> redoActivityList;
 
     protected UndoRedoState(LinkedList<AppAction> undoActivityList, LinkedList<AppAction> redoActivity) {

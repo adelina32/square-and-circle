@@ -1,26 +1,22 @@
 package org.example.model;
 
+import lombok.Getter;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-public class Model extends Observable {
-    private MyShape currentShape;
-    private List<MyShape> shapeList = new ArrayList<>();
+@Getter
+public class Model extends Observable { //
 
-    public void  createCurrentShape(MyShape shape){
-        currentShape = shape;
-        shapeList.add(shape);
-    }
+    private final List<MyShape> shapeList = new ArrayList<>(); //добавляемые и удаляемые
 
-    public void setMyShape(MyShape myShape) {
-        this.currentShape = myShape;
-    }
 
-    public void changeShape(Point2D x, Point2D y) {
-        currentShape.setFrame(x, y);
+
+    public void addCurrentShape(MyShape myShape){
+        shapeList.add(myShape);
     }
 
     public void draw(Graphics2D g) {
@@ -28,22 +24,23 @@ public class Model extends Observable {
             shape.draw(g);
         }
     }
-    public void update()
-    {
-        this.setChanged();
-        this.notifyObservers();
-    }
-    public void addCurrentShape(MyShape myShape){
-        shapeList.add(myShape);
-    }
-    public List<MyShape> getShapeList() {
-        return shapeList;
-    }
 
     public void removeLastShape() {
+        int size = shapeList.size();
+        shapeList.remove(size - 1);
     }
 
     public MyShape getLastShape() {
-        return null;
+        int size = shapeList.size();
+        return shapeList.isEmpty() ? null : shapeList.get(size - 1);
+    }
+
+    public void setMyShape(MyShape sampleShape) {
+    }
+
+    public void update()
+    {
+        this.setChanged();
+        this.notifyObservers(); //увед
     }
 }

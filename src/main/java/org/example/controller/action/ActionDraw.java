@@ -8,42 +8,16 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class ActionDraw implements AppAction {
-    private Model model;
+    private final Model model;
     private MyShape shape;
-    private ShapeCreation shapeCreation;
+    private final ShapeCreation shapeCreation;
     private Point2D firstPoint;
-    private Point2D secondPoint;
-    private MyShape drawableShape;
-
-    public MyShape getShape() {
-        return shape;
-    }
+    private MyShape drawableShape; //отображается
 
     public ActionDraw(Model model, MyShape shape) {
         this.model = model;
         this.shape = shape;
         shapeCreation = ShapeCreation.getInstance();
-    }
-    public  void  stretchShape (Point point){
-        firstPoint = point;
-        shape.setFrame(firstPoint, secondPoint);
-        model.update();
-
-    }
-
-    public void createShape (Point point){
-        secondPoint = point;
-        shape = shape.clone();
-        model.createCurrentShape(shape);
-        model.update();
-
-    }
-    @Override
-    public void mouseDragged(Point point){
-        secondPoint = point;
-        shape.setFrame(firstPoint, secondPoint);
-        drawableShape.setFrame(firstPoint, secondPoint);
-        model.update();
     }
 
     @Override
@@ -52,6 +26,13 @@ public class ActionDraw implements AppAction {
         shape = shapeCreation.createShape();
         drawableShape = shape;
         model.addCurrentShape(shape);
+        model.update();
+    }
+
+    @Override
+    public void mouseDragged(Point point){
+        shape.setFrame(firstPoint, point);
+        drawableShape.setFrame(firstPoint, point);
         model.update();
     }
 
@@ -65,15 +46,15 @@ public class ActionDraw implements AppAction {
     @Override
     public void unexecute() {
         drawableShape = model.getLastShape();
-        model.removeLastShape();
+        model.removeLastShape(); // удаляет последнюю
         model.update();
     }
 
     @Override
     public AppAction cloneAction() {
-        ActionDraw actionDraw = new ActionDraw(model, shape);
+        ActionDraw actionDraw = new ActionDraw(model, shape); // создание нового объекта
         actionDraw.shape = shape.clone();
         actionDraw.drawableShape = drawableShape;
-        return null;
+        return actionDraw;
     }
 }

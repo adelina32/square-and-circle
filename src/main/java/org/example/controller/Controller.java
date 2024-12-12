@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import lombok.AllArgsConstructor;
 import org.example.controller.action.ActionDraw;
 import org.example.controller.action.AppAction;
 import org.example.controller.factory.MenuState;
@@ -10,16 +11,16 @@ import org.example.model.MyShape;
 import org.example.model.fill.NoFill;
 import org.example.view.MyFrame;
 import org.example.view.MyPanel;
-import org.example.view.menu.MenuCreator;
+import org.example.view.menu.*;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-
+@AllArgsConstructor
 public class Controller {
     private final Model model;
     private static Controller instance;
     private final MenuState menuState;
-    private UndoMachine undoMachine;
+    private UndoMachine undoMachine1;
 
     public static synchronized Controller getInstance(){
         if (instance == null){
@@ -39,6 +40,8 @@ public class Controller {
         menuState.setAction(new ActionDraw(model, sampleShape));
         sampleShape.setFb(new NoFill());
 
+        menuState.setAction(new ActionDraw(model , sampleShape));
+
         model.setMyShape(sampleShape);
         MyPanel panel = new MyPanel(this);
 
@@ -47,19 +50,28 @@ public class Controller {
         MyFrame frame = new MyFrame();
         frame.setPanel(panel);
 
+        undoMachine1 = new UndoMachine(); //
+
         MenuCreator menuCreator = MenuCreator.getInstance();
         menuCreator.setMenuState(menuState);
         menuCreator.setModel(model);
+        menuCreator.setUndoMachine(undoMachine1);
+
+        menuCreator.setState(menuState); //
+        menuCreator.setUndoMachine(undoMachine1);  //
+        menuCreator.setModel(model);  //
 
         frame.setJMenuBar(menuCreator.createMenuBar());
         frame.add(menuCreator.createToolBar(), BorderLayout.WEST);
+        frame.revalidate(); //
+
     }
 
     public void getPointOne(Point2D p) {
         AppAction actionDraw1 = menuState.getAction();
         actionDraw1.mousePressed((Point) p);
-        undoMachine.add(actionDraw1.cloneAction());
-        undoMachine.updateButtons();
+        undoMachine1.add(actionDraw1.cloneAction());
+        undoMachine1.updateButtons();
 
     }
 

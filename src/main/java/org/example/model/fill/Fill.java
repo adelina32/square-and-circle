@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.geom.RectangularShape;
+
 public class Fill implements FillBehavior {
 
     private Color color;
@@ -15,14 +16,9 @@ public class Fill implements FillBehavior {
     }
 
     @Override
-    public Color getColor() {
-        return color;
-    }
-
-    @Override
     public void draw(Graphics2D g) {
         Paint paint = g.getPaint();
-        g.setPaint(color);
+        g.setPaint(color); // смена на выбранный цвет заливки
         g.fill(shape);
         g.setPaint(paint);
     }
@@ -42,7 +38,6 @@ public class Fill implements FillBehavior {
         Fill fill = new Fill();
         fill.setColor(color);
         fill.shape =(RectangularShape) shape.clone();
-        return  fill;
+        return fill;
     }
-
 }
