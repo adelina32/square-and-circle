@@ -17,7 +17,7 @@ public class ActionDraw implements AppAction {
     public ActionDraw(Model model, MyShape shape) {
         this.model = model;
         this.shape = shape;
-        shapeCreation = ShapeCreation.getInstance();
+        shapeCreation = ShapeCreation.getInstance(); //ф
     }
 
     @Override
@@ -40,19 +40,18 @@ public class ActionDraw implements AppAction {
     public void execute() {
         model.addCurrentShape(drawableShape);
         model.update();
-
     }
 
     @Override
     public void unexecute() {
         drawableShape = model.getLastShape();
-        model.removeLastShape(); // удаляет последнюю
+        model.removeLastShape(); //удаляет последнюю
         model.update();
     }
 
     @Override
     public AppAction cloneAction() {
-        ActionDraw actionDraw = new ActionDraw(model, shape); // создание нового объекта
+        ActionDraw actionDraw = new ActionDraw(model, shape);
         actionDraw.shape = shape.clone();
         actionDraw.drawableShape = drawableShape;
         return actionDraw;

@@ -13,8 +13,6 @@ public class Model extends Observable { //
 
     private final List<MyShape> shapeList = new ArrayList<>(); //добавляемые и удаляемые
 
-
-
     public void addCurrentShape(MyShape myShape){
         shapeList.add(myShape);
     }

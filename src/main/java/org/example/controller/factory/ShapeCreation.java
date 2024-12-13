@@ -9,7 +9,7 @@ import org.example.model.fill.NoFill;
 import java.awt.*;
 import java.awt.geom.RectangularShape;
 @Setter
-public class ShapeCreation {
+public class ShapeCreation {//
     private static ShapeCreation instance;
     private MenuState state;
     public static synchronized ShapeCreation getInstance(){
@@ -29,7 +29,7 @@ public class ShapeCreation {
 
         FillBehavior fillBehavior = state.isFill()? new Fill() : new NoFill();
         fillBehavior.setShape(shape);
-        fillBehavior.setColor(state.getColor()); //
+        fillBehavior.setColor(state.getColor());
 
         newShape.setFb(fillBehavior);
         return newShape;

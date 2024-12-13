@@ -4,7 +4,7 @@ import org.example.controller.action.AppAction;
 
 import java.util.LinkedList;
 
-public class StateEnableUndoDisableRedo extends UndoRedoState {//
+public class StateEnableUndoDisableRedo extends UndoRedoState {//поведения
 
     protected StateEnableUndoDisableRedo(LinkedList<AppAction> undoActivityList, LinkedList<AppAction> redoActivity) {
         super(undoActivityList, redoActivity);
